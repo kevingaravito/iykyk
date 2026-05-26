@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hey :)</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff5f7;
+    text-align: center;
+    margin-top: 80px;
+  }
+
+  .box {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  }
+
+  button {
+    padding: 12px 22px;
+    margin: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  #yesBtn {
+    background: #ff4d6d;
+    color: white;
+  }
+
+  #noBtn {
+    background: #ccc;
+    position: relative;
+  }
+
+  select, input {
+    padding: 10px;
+    margin: 10px;
+    width: 80%;
+    font-size: 16px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="box" id="step1">
+  <h2>Hey 👀</h2>
+  <p>I have a question for you...</p>
+
+  <button id="yesBtn" onclick="yes()">Yes 🙂</button>
+  <button id="noBtn" onmouseover="moveNo()" onclick="no()">No 😅</button>
+</div>
+
+<div class="box" id="step2" style="display:none;">
+  <h2>Nice 😎 What food are you feeling?</h2>
+
+  <select id="food">
+    <option>Pizza</option>
+    <option>Sushi</option>
+    <option>Colombian</option>
+    <option>Mexican</option>
+  </select>
+
+  <br>
+  <button onclick="next()">Next</button>
+</div>
+
+<div class="box" id="step3" style="display:none;">
+  <h2>When are you free?</h2>
+
+  <input type="date" id="date">
+  <input type="time" id="time">
+
+  <br>
+  <button onclick="finish()">Finish</button>
+</div>
+
+<div class="box" id="final" style="display:none;">
+  <h2>Perfect 😎</h2>
+  <p id="summary"></p>
+</div>
+
+<script>
+function yes() {
+  document.getElementById("step1").style.display = "none";
+  document.getElementById("step2").style.display = "block";
+}
+
+function no() {
+  alert("All good 🙂 thanks for being honest!");
+}
+
+// playful movement, but still clickable
+function moveNo() {
+  const btn = document.getElementById("noBtn");
+
+  const x = Math.random() * 40 - 20;
+  const y = Math.random() * 20 - 10;
+
+  btn.style.transform = `translate(${x}px, ${y}px)`;
+}
+
+function next() {
+  document.getElementById("step2").style.display = "none";
+  document.getElementById("step3").style.display = "block";
+}
+
+function finish() {
+  let food = document.getElementById("food").value;
+  let date = document.getElementById("date").value;
+  let time = document.getElementById("time").value;
+
+  document.getElementById("step3").style.display = "none";
+  document.getElementById("final").style.display = "block";
+
+  document.getElementById("summary").innerText =
+    `You chose ${food} on ${date} at ${time}.`;
+}
+</script>
+
+</body>
+</html>
