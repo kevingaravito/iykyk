@@ -10,7 +10,7 @@ font-family: Arial, sans-serif;
 background: #fff5f7;
 text-align: center;
 margin-top: 80px;
-overflow-x: hidden; /* Prevents accidental side-scrolling if the button goes near the edge */
+overflow: hidden; /* Prevents scrollbars from appearing when the button flees */
 }
 
 .box {
@@ -39,8 +39,8 @@ color: white;
 
 #noBtn {
 background: #ccc;
-position: absolute; /* CHANGED: Essential so JavaScript can teleport it anywhere */
-transition: all 0.1s ease; /* Optional: adds a smooth slide effect when it runs away */
+/* Removed absolute position from here so it stays in the box naturally at first */
+transition: all 0.1s ease;
 }
 
 select, input {
@@ -101,16 +101,16 @@ function no() {
 alert("All good 🙂 thanks for being honest!");
 }
 
-// CHANGED: Complete getaway logic
 function moveNo() {
 const btn = document.getElementById("noBtn");
 
-// Calculate random width and height coordinates within the user's viewable screen
-// Subtracting the button's size prevents it from running off the screen edges
+// This breaks the button completely out of the box and lets it use the whole screen
+btn.style.position = "fixed";
+
+// Calculate random coordinates across the absolute entire browser window
 const x = Math.floor(Math.random() * (window.innerWidth - btn.offsetWidth));
 const y = Math.floor(Math.random() * (window.innerHeight - btn.offsetHeight));
 
-// Set the precise pixel coordinates
 btn.style.left = x + "px";
 btn.style.top = y + "px";
 }
@@ -135,3 +135,4 @@ document.getElementById("summary").innerText =
 
 </body>
 </html>
+
