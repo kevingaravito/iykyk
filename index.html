@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hey :)</title>
 
 <style>
@@ -30,6 +31,12 @@ font-size: 16px;
 border: none;
 border-radius: 8px;
 cursor: pointer;
+font-weight: bold;
+transition: transform 0.1s ease;
+}
+
+button:active {
+transform: scale(0.95);
 }
 
 #yesBtn {
@@ -39,8 +46,8 @@ color: white;
 
 #noBtn {
 background: #ccc;
-/* Removed absolute position from here so it stays in the box naturally at first */
-transition: all 0.1s ease;
+color: #333;
+transition: all 0.15s ease;
 }
 
 select, input {
@@ -48,6 +55,19 @@ padding: 10px;
 margin: 10px;
 width: 80%;
 font-size: 16px;
+border: 1px solid #ddd;
+border-radius: 8px;
+outline: none;
+}
+
+select:focus, input:focus {
+border-color: #ff4d6d;
+}
+
+.next-btn {
+background: #ff4d6d;
+color: white;
+width: 85%;
 }
 </style>
 </head>
@@ -55,43 +75,40 @@ font-size: 16px;
 <body>
 
 <div class="box" id="step1">
-<h2>Will you go out with me ?</h2>
-
-
+<h2>Will you go out with me?</h2>
 <button id="yesBtn" onclick="yes()">Yes 🙂</button>
-<button id="noBtn" onmouseover="moveNo()" onclick="no()">No 😅</button>
+<button id="noBtn" onmouseenter="moveNo()" ontouchstart="moveNo(); event.preventDefault();" onclick="no()">No 😅</button>
 </div>
 
 <div class="box" id="step2" style="display:none;">
 <h2>Nice 😎 What food are you feeling?</h2>
-
 <select id="food">
-<option>Pizza</option>
-<option>Sushi</option>
-<option>Colombian</option>
-<option>Mexican</option>
+<option>Pizza 🍕</option>
+<option>Sushi 🍣</option>
+<option>Colombian 🇨🇴</option>
+<option>Mexican 🌮</option>
 </select>
-
 <br>
-<button onclick="next()">Next</button>
+<button class="next-btn" onclick="next()">Next</button>
 </div>
 
 <div class="box" id="step3" style="display:none;">
 <h2>When are you free?</h2>
-
 <input type="date" id="date">
 <input type="time" id="time">
-
 <br>
-<button onclick="finish()">Finish</button>
+<button class="next-btn" onclick="finish()">Finish ✨</button>
 </div>
 
 <div class="box" id="final" style="display:none;">
-<h2>Perfect 😎</h2>
-<p id="summary"></p>
+<h2>Perfect 😎 See you then!</h2>
+<p id="summary" style="font-size: 18px; color: #444; font-weight: 500;"></p>
 </div>
 
 <script>
+// Set the minimum date to today so they can't pick a past date
+document.getElementById('date').min = new Date().toISOString().split('T')[0];
+
 function yes() {
 document.getElementById("step1").style.display = "none";
 document.getElementById("step2").style.display = "block";
@@ -103,11 +120,9 @@ alert("All good 🙂 thanks for being honest!");
 
 function moveNo() {
 const btn = document.getElementById("noBtn");
-
-// This breaks the button completely out of the box and lets it use the whole screen
 btn.style.position = "fixed";
 
-// Calculate random coordinates across the absolute entire browser window
+// Calculate safe random coordinates within viewport bounds
 const x = Math.floor(Math.random() * (window.innerWidth - btn.offsetWidth));
 const y = Math.floor(Math.random() * (window.innerHeight - btn.offsetHeight));
 
@@ -122,14 +137,34 @@ document.getElementById("step3").style.display = "block";
 
 function finish() {
 let food = document.getElementById("food").value;
-let date = document.getElementById("date").value;
-let time = document.getElementById("time").value;
+let dateInput = document.getElementById("date").value;
+let timeInput = document.getElementById("time").value;
+
+// Validation: Don't let them submit an empty date or time
+if (!dateInput || !timeInput) {
+alert("Please pick a date and time so I can lock it in! 😉");
+return;
+}
+
+// Format the date to look cleaner (e.g., "Oct 12" or "Monday, Oct 12")
+let formattedDate = new Date(dateInput + 'T00:00:00').toLocaleDateString('en-US', { 
+weekday: 'long', 
+month: 'short', 
+day: 'numeric' 
+});
+
+// Format time to 12-hour AM/PM format
+let [hours, minutes] = timeInput.split(':');
+let ampm = hours >= 12 ? 'PM' : 'AM';
+hours = hours % 12;
+hours = hours ? hours : 12; // the hour '0' should be '12'
+let formattedTime = hours + ':' + minutes + ' ' + ampm;
 
 document.getElementById("step3").style.display = "none";
 document.getElementById("final").style.display = "block";
 
-document.getElementById("summary").innerText =
-`You chose ${food} on ${date} at ${time}.`;
+document.getElementById("summary").innerHTML = 
+`We are getting <strong>${food}</strong> on <strong>${formattedDate}</strong> at <strong>${formattedTime}</strong>!`;
 }
 </script>
 
