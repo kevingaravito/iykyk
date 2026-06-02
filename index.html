@@ -6,168 +6,292 @@
 <title>Hey :)</title>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 body {
-font-family: Arial, sans-serif;
-background: #fff5f7;
-text-align: center;
-margin-top: 80px;
-overflow: hidden; /* Prevents scrollbars from appearing when the button flees */
+    font-family: Arial, sans-serif;
+    /* Soft pink Hello Kitty aesthetic background pattern */
+    background-color: #ffe6eb;
+    background-image: url('https://img.magnific.com/free-vector/baby-girl-editable-pattern_1108-199.jpg?semt=ais_hybrid&w=740&q=80');
+    background-size: 300px; /* Seamless tile size */
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden; /* Prevents scrollbars when the button flees */
 }
 
 .box {
-background: white;
-width: 90%;
-max-width: 500px;
-margin: auto;
-padding: 25px;
-border-radius: 15px;
-box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    background: white;
+    width: 100%;
+    max-width: 480px;
+    padding: 30px;
+    border-radius: 24px;
+    box-shadow: 0 15px 35px rgba(255, 77, 109, 0.15);
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+    border: 3px solid #ffb3c1;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    color: #ff4d6d;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Container to keep buttons inline before "No" takes off */
+.btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    position: relative;
+    min-height: 60px;
+    align-items: center;
 }
 
 button {
-padding: 12px 22px;
-margin: 10px;
-font-size: 16px;
-border: none;
-border-radius: 8px;
-cursor: pointer;
-font-weight: bold;
-transition: transform 0.1s ease;
+    padding: 12px 28px;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.1s ease, background 0.2s;
 }
 
 button:active {
-transform: scale(0.95);
+    transform: scale(0.95);
 }
 
 #yesBtn {
-background: #ff4d6d;
-color: white;
+    background: #ff4d6d;
+    color: white;
+}
+
+#yesBtn:hover {
+    background: #ff3355;
 }
 
 #noBtn {
-background: #ccc;
-color: #333;
-transition: all 0.15s ease;
+    background: #e0e0e0;
+    color: #555;
+    position: relative;
+    z-index: 10;
 }
 
-select, input {
-padding: 10px;
-margin: 10px;
-width: 80%;
-font-size: 16px;
-border: 1px solid #ddd;
-border-radius: 8px;
-outline: none;
+/* --- Visual Food Grid System --- */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 Columns side-by-side */
+    gap: 15px;
+    margin: 20px 0;
 }
 
-select:focus, input:focus {
-border-color: #ff4d6d;
+.food-card {
+    background: #fff5f7;
+    border: 2px solid #ffe6eb;
+    border-radius: 16px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.food-card:hover {
+    transform: translateY(-3px);
+    border-color: #ffb3c1;
+}
+
+/* Active visual state when a grid card is chosen */
+.food-card.selected {
+    border-color: #ff4d6d;
+    background: #ffe6eb;
+    box-shadow: 0 5px 15px rgba(255, 77, 109, 0.2);
+}
+
+.food-emoji {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.food-label {
+    font-weight: bold;
+    color: #555;
+    font-size: 15px;
+}
+
+/* --- Form Fields & Next Controls --- */
+input {
+    padding: 12px;
+    margin: 10px 0;
+    width: 100%;
+    font-size: 16px;
+    border: 2px solid #ffe6eb;
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+input:focus {
+    border-color: #ff4d6d;
 }
 
 .next-btn {
-background: #ff4d6d;
-color: white;
-width: 85%;
+    background: #ff4d6d;
+    color: white;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.next-btn:hover {
+    background: #ff3355;
+}
+
+#summary {
+    line-height: 1.6;
 }
 </style>
 </head>
-
 <body>
 
+<!-- STEP 1: The Question -->
 <div class="box" id="step1">
-<h2>Will you go out with me?</h2>
-<button id="yesBtn" onclick="yes()">Yes 🙂</button>
-<button id="noBtn" onmouseenter="moveNo()" ontouchstart="moveNo(); event.preventDefault();" onclick="no()">No 😅</button>
+    <h2>Will you go out with me?</h2>
+    <div class="btn-container">
+        <button id="yesBtn" onclick="yes()">Yes 🙂</button>
+        <button id="noBtn" onmouseenter="moveNo()" ontouchstart="moveNo(); event.preventDefault();" onclick="no()">No 😅</button>
+    </div>
 </div>
 
+<!-- STEP 2: Food Grid Selector -->
 <div class="box" id="step2" style="display:none;">
-<h2>Nice 😎 What food are you feeling?</h2>
-<select id="food">
-<option>Pizza 🍕</option>
-<option>Sushi 🍣</option>
-<option>Colombian 🇨🇴</option>
-<option>Mexican 🌮</option>
-</select>
-<br>
-<button class="next-btn" onclick="next()">Next</button>
+    <h2>Nice 😎 What food are you feeling?</h2>
+    
+    <div class="grid-container">
+        <div class="food-card" onclick="selectFood(this, 'Pizza 🍕')">
+            <span class="food-emoji">🍕</span>
+            <span class="food-label">Pizza</span>
+        </div>
+        <div class="food-card" onclick="selectFood(this, 'Sushi 🍣')">
+            <span class="food-emoji">🍣</span>
+            <span class="food-label">Sushi</span>
+        </div>
+        <div class="food-card" onclick="selectFood(this, 'Colombian 🇨🇴')">
+            <span class="food-emoji">🇨🇴</span>
+            <span class="food-label">Colombian</span>
+        </div>
+        <div class="food-card" onclick="selectFood(this, 'Mexican 🌮')">
+            <span class="food-emoji">🌮</span>
+            <span class="food-label">Mexican</span>
+        </div>
+    </div>
+
+    <button class="next-btn" onclick="next()">Next</button>
 </div>
 
+<!-- STEP 3: Date & Time Picker -->
 <div class="box" id="step3" style="display:none;">
-<h2>When are you free?</h2>
-<input type="date" id="date">
-<input type="time" id="time">
-<br>
-<button class="next-btn" onclick="finish()">Finish ✨</button>
+    <h2>When are you free?</h2>
+    <input type="date" id="date">
+    <input type="time" id="time">
+    <br>
+    <button class="next-btn" onclick="finish()">Finish ✨</button>
 </div>
 
+<!-- FINAL STEP: Summary Confirmation -->
 <div class="box" id="final" style="display:none;">
-<h2>Perfect 😎 See you then!</h2>
-<p id="summary" style="font-size: 18px; color: #444; font-weight: 500;"></p>
+    <h2>Perfect 😎 See you then!</h2>
+    <p id="summary" style="font-size: 18px; color: #444; font-weight: 500;"></p>
 </div>
 
 <script>
-// Set the minimum date to today so they can't pick a past date
+// Keep track of the user's food selection choice
+let selectedFoodValue = "";
+
+// Lock date picker to current date onwards
 document.getElementById('date').min = new Date().toISOString().split('T')[0];
 
 function yes() {
-document.getElementById("step1").style.display = "none";
-document.getElementById("step2").style.display = "block";
+    document.getElementById("step1").style.display = "none";
+    document.getElementById("step2").style.display = "block";
 }
 
 function no() {
-alert("All good 🙂 thanks for being honest!");
+    alert("All good 🙂 thanks for being honest!");
 }
 
 function moveNo() {
-const btn = document.getElementById("noBtn");
-btn.style.position = "fixed";
+    const btn = document.getElementById("noBtn");
+    if (btn.style.position !== "fixed") {
+        btn.style.position = "fixed";
+    }
+    const padding = 20;
+    const x = Math.floor(Math.random() * (window.innerWidth - btn.offsetWidth - (padding * 2))) + padding;
+    const y = Math.floor(Math.random() * (window.innerHeight - btn.offsetHeight - (padding * 2))) + padding;
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+}
 
-// Calculate safe random coordinates within viewport bounds
-const x = Math.floor(Math.random() * (window.innerWidth - btn.offsetWidth));
-const y = Math.floor(Math.random() * (window.innerHeight - btn.offsetHeight));
-
-btn.style.left = x + "px";
-btn.style.top = y + "px";
+// Handles selecting a food item card in the grid
+function selectFood(element, foodName) {
+    // Remove selected style modifier from all sibling cards
+    const cards = document.querySelectorAll('.food-card');
+    cards.forEach(card => card.classList.remove('selected'));
+    
+    // Add selection highlights to the specific clicked target card
+    element.classList.add('selected');
+    
+    // Update our tracker variable with the chosen item text
+    selectedFoodValue = foodName;
 }
 
 function next() {
-document.getElementById("step2").style.display = "none";
-document.getElementById("step3").style.display = "block";
+    // Validation check: ensure they highlighted an option before hitting Next
+    if (!selectedFoodValue) {
+        alert("Pick a food option first! 😋");
+        return;
+    }
+    document.getElementById("step2").style.display = "none";
+    document.getElementById("step3").style.display = "block";
 }
 
 function finish() {
-let food = document.getElementById("food").value;
-let dateInput = document.getElementById("date").value;
-let timeInput = document.getElementById("time").value;
+    let dateInput = document.getElementById("date").value;
+    let timeInput = document.getElementById("time").value;
 
-// Validation: Don't let them submit an empty date or time
-if (!dateInput || !timeInput) {
-alert("Please pick a date and time so I can lock it in! 😉");
-return;
-}
+    if (!dateInput || !timeInput) {
+        alert("Please pick a date and time so I can lock it in! 😉");
+        return;
+    }
 
-// Format the date to look cleaner (e.g., "Oct 12" or "Monday, Oct 12")
-let formattedDate = new Date(dateInput + 'T00:00:00').toLocaleDateString('en-US', { 
-weekday: 'long', 
-month: 'short', 
-day: 'numeric' 
-});
+    let formattedDate = new Date(dateInput + 'T00:00:00').toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        month: 'short', 
+        day: 'numeric' 
+    });
 
-// Format time to 12-hour AM/PM format
-let [hours, minutes] = timeInput.split(':');
-let ampm = hours >= 12 ? 'PM' : 'AM';
-hours = hours % 12;
-hours = hours ? hours : 12; // the hour '0' should be '12'
-let formattedTime = hours + ':' + minutes + ' ' + ampm;
+    let [hours, minutes] = timeInput.split(':');
+    let ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; 
+    let formattedTime = hours + ':' + minutes + ' ' + ampm;
 
-document.getElementById("step3").style.display = "none";
-document.getElementById("final").style.display = "block";
+    document.getElementById("step3").style.display = "none";
+    document.getElementById("final").style.display = "block";
 
-document.getElementById("summary").innerHTML = 
-`We are getting <strong>${food}</strong> on <strong>${formattedDate}</strong> at <strong>${formattedTime}</strong>!`;
+    document.getElementById("summary").innerHTML = 
+        `We are getting <strong>${selectedFoodValue}</strong> on <strong>${formattedDate}</strong> at <strong>${formattedTime}</strong>!`;
 }
 </script>
 
 </body>
 </html>
-
