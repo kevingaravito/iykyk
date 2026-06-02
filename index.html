@@ -45,6 +45,7 @@ h2 {
     color: #ff4d6d;
     margin-bottom: 20px;
     font-size: 24px;
+    line-height: 1.4;
 }
 
 .btn-container {
@@ -204,7 +205,7 @@ input:focus {
     </div>
 
     <div class="box" id="final" style="display:none;">
-        <h2>Perfect 😎 See you then!</h2>
+        <h2>Thank you for making me the happiest guy alive 💙</h2>
         <p id="summary" style="font-size: 18px; color: #444; font-weight: 500;"></p>
     </div>
 
@@ -242,66 +243,9 @@ function selectFood(element, foodName) {
     
     element.classList.add('selected');
     selectedFoodValue = foodName;
-    
-    // Sync the clicked grid selection text to our hidden form input field
     document.getElementById("hiddenFoodInput").value = foodName;
 }
 
 function next() {
     if (!selectedFoodValue) {
         alert("Pick a food option first! 😋");
-        return;
-    }
-    document.getElementById("step2").style.display = "none";
-    document.getElementById("step3").style.display = "block";
-}
-
-// Intercepts the click, validates inputs, sends data via AJAX background request
-function validateAndSubmit(event) {
-    let dateInput = document.getElementById("date").value;
-    let timeInput = document.getElementById("time").value;
-
-    if (!dateInput || !timeInput) {
-        alert("Please pick a date and time so I can lock it in! 😉");
-        return;
-    }
-
-    // Process UI formatting values
-    let formattedDate = new Date(dateInput + 'T00:00:00').toLocaleDateString('en-US', { 
-        weekday: 'long', month: 'short', day: 'numeric' 
-    });
-
-    let [hours, minutes] = timeInput.split(':');
-    let ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; 
-    let formattedTime = hours + ':' + minutes + ' ' + ampm;
-
-    // Immediately swap user to the final confirmation screen so they don't see a page reload
-    document.getElementById("step3").style.display = "none";
-    document.getElementById("final").style.display = "block";
-    document.getElementById("summary").innerHTML = 
-        `We are getting <strong>${selectedFoodValue}</strong> on <strong>${formattedDate}</strong> at <strong>${formattedTime}</strong>!`;
-
-    // Package the form data and silently submit it to the backend server via Fetch API
-    const form = document.getElementById("dateForm");
-    const formData = new FormData(form);
-
-    fetch(form.action, {
-        method: "POST",
-        body: formData,
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => {
-        console.log("Form submitted successfully!");
-    })
-    .catch(error => {
-        console.error("Submission failed:", error);
-    });
-}
-</script>
-
-</body>
-</html>
