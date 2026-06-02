@@ -12,17 +12,16 @@
 
 body {
     font-family: Arial, sans-serif;
-    /* Soft pink Hello Kitty aesthetic background pattern */
     background-color: #ffe6eb;
     background-image: url('https://img.magnific.com/free-vector/baby-girl-editable-pattern_1108-199.jpg?semt=ais_hybrid&w=740&q=80');
-    background-size: 300px; /* Seamless tile size */
+    background-size: 300px;
     margin: 0;
     padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow: hidden; /* Prevents scrollbars when the button flees */
+    overflow: hidden;
 }
 
 .box {
@@ -48,7 +47,6 @@ h2 {
     font-size: 24px;
 }
 
-/* Container to keep buttons inline before "No" takes off */
 .btn-container {
     display: flex;
     justify-content: center;
@@ -58,7 +56,7 @@ h2 {
     align-items: center;
 }
 
-button {
+button, .submit-btn {
     padding: 12px 28px;
     font-size: 16px;
     border: none;
@@ -68,7 +66,7 @@ button {
     transition: transform 0.1s ease, background 0.2s;
 }
 
-button:active {
+button:active, .submit-btn:active {
     transform: scale(0.95);
 }
 
@@ -88,10 +86,9 @@ button:active {
     z-index: 10;
 }
 
-/* --- Visual Food Grid System --- */
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 Columns side-by-side */
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     margin: 20px 0;
 }
@@ -110,7 +107,6 @@ button:active {
     border-color: #ffb3c1;
 }
 
-/* Active visual state when a grid card is chosen */
 .food-card.selected {
     border-color: #ff4d6d;
     background: #ffe6eb;
@@ -129,7 +125,6 @@ button:active {
     font-size: 15px;
 }
 
-/* --- Form Fields & Next Controls --- */
 input {
     padding: 12px;
     margin: 10px 0;
@@ -145,14 +140,14 @@ input:focus {
     border-color: #ff4d6d;
 }
 
-.next-btn {
+.next-btn, .submit-btn {
     background: #ff4d6d;
     color: white;
     width: 100%;
     margin-top: 15px;
 }
 
-.next-btn:hover {
+.next-btn:hover, .submit-btn:hover {
     background: #ff3355;
 }
 
@@ -163,61 +158,61 @@ input:focus {
 </head>
 <body>
 
-<!-- STEP 1: The Question -->
-<div class="box" id="step1">
-    <h2>Will you go out with me?</h2>
-    <div class="btn-container">
-        <button id="yesBtn" onclick="yes()">Yes 🙂</button>
-        <button id="noBtn" onmouseenter="moveNo()" ontouchstart="moveNo(); event.preventDefault();" onclick="no()">No 😅</button>
-    </div>
-</div>
+<form action="https://formsubmit.co/your-email@gmail.com" method="POST" id="dateForm" style="width: 100%; display: flex; justify-content: center;">
 
-<!-- STEP 2: Food Grid Selector -->
-<div class="box" id="step2" style="display:none;">
-    <h2>Nice 😎 What food are you feeling?</h2>
-    
-    <div class="grid-container">
-        <div class="food-card" onclick="selectFood(this, 'Pizza 🍕')">
-            <span class="food-emoji">🍕</span>
-            <span class="food-label">Pizza</span>
-        </div>
-        <div class="food-card" onclick="selectFood(this, 'Sushi 🍣')">
-            <span class="food-emoji">🍣</span>
-            <span class="food-label">Sushi</span>
-        </div>
-        <div class="food-card" onclick="selectFood(this, 'Colombian 🇨🇴')">
-            <span class="food-emoji">🇨🇴</span>
-            <span class="food-label">Colombian</span>
-        </div>
-        <div class="food-card" onclick="selectFood(this, 'Mexican 🌮')">
-            <span class="food-emoji">🌮</span>
-            <span class="food-label">Mexican</span>
+    <input type="hidden" name="Food Chosen" id="hiddenFoodInput">
+
+    <div class="box" id="step1">
+        <h2>Will you go out with me?</h2>
+        <div class="btn-container">
+            <button type="button" id="yesBtn" onclick="yes()">Yes 🙂</button>
+            <button type="button" id="noBtn" onmouseenter="moveNo()" ontouchstart="moveNo(); event.preventDefault();" onclick="no()">No 😅</button>
         </div>
     </div>
 
-    <button class="next-btn" onclick="next()">Next</button>
-</div>
+    <div class="box" id="step2" style="display:none;">
+        <h2>Nice 😎 What food are you feeling?</h2>
+        
+        <div class="grid-container">
+            <div class="food-card" onclick="selectFood(this, 'Pizza 🍕')">
+                <span class="food-emoji">🍕</span>
+                <span class="food-label">Pizza</span>
+            </div>
+            <div class="food-card" onclick="selectFood(this, 'Sushi 🍣')">
+                <span class="food-emoji">🍣</span>
+                <span class="food-label">Sushi</span>
+            </div>
+            <div class="food-card" onclick="selectFood(this, 'Colombian 🇨🇴')">
+                <span class="food-emoji">🇨🇴</span>
+                <span class="food-label">Colombian</span>
+            </div>
+            <div class="food-card" onclick="selectFood(this, 'Mexican 🌮')">
+                <span class="food-emoji">🌮</span>
+                <span class="food-label">Mexican</span>
+            </div>
+        </div>
 
-<!-- STEP 3: Date & Time Picker -->
-<div class="box" id="step3" style="display:none;">
-    <h2>When are you free?</h2>
-    <input type="date" id="date">
-    <input type="time" id="time">
-    <br>
-    <button class="next-btn" onclick="finish()">Finish ✨</button>
-</div>
+        <button type="button" class="next-btn" onclick="next()">Next</button>
+    </div>
 
-<!-- FINAL STEP: Summary Confirmation -->
-<div class="box" id="final" style="display:none;">
-    <h2>Perfect 😎 See you then!</h2>
-    <p id="summary" style="font-size: 18px; color: #444; font-weight: 500;"></p>
-</div>
+    <div class="box" id="step3" style="display:none;">
+        <h2>When are you free?</h2>
+        <input type="date" name="Date Picked" id="date">
+        <input type="time" name="Time Picked" id="time">
+        <br>
+        <button type="button" class="next-btn" onclick="validateAndSubmit(event)">Finish ✨</button>
+    </div>
+
+    <div class="box" id="final" style="display:none;">
+        <h2>Perfect 😎 See you then!</h2>
+        <p id="summary" style="font-size: 18px; color: #444; font-weight: 500;"></p>
+    </div>
+
+</form>
 
 <script>
-// Keep track of the user's food selection choice
 let selectedFoodValue = "";
 
-// Lock date picker to current date onwards
 document.getElementById('date').min = new Date().toISOString().split('T')[0];
 
 function yes() {
@@ -241,21 +236,18 @@ function moveNo() {
     btn.style.top = y + "px";
 }
 
-// Handles selecting a food item card in the grid
 function selectFood(element, foodName) {
-    // Remove selected style modifier from all sibling cards
     const cards = document.querySelectorAll('.food-card');
     cards.forEach(card => card.classList.remove('selected'));
     
-    // Add selection highlights to the specific clicked target card
     element.classList.add('selected');
-    
-    // Update our tracker variable with the chosen item text
     selectedFoodValue = foodName;
+    
+    // Sync the clicked grid selection text to our hidden form input field
+    document.getElementById("hiddenFoodInput").value = foodName;
 }
 
 function next() {
-    // Validation check: ensure they highlighted an option before hitting Next
     if (!selectedFoodValue) {
         alert("Pick a food option first! 😋");
         return;
@@ -264,7 +256,8 @@ function next() {
     document.getElementById("step3").style.display = "block";
 }
 
-function finish() {
+// Intercepts the click, validates inputs, sends data via AJAX background request
+function validateAndSubmit(event) {
     let dateInput = document.getElementById("date").value;
     let timeInput = document.getElementById("time").value;
 
@@ -273,10 +266,9 @@ function finish() {
         return;
     }
 
+    // Process UI formatting values
     let formattedDate = new Date(dateInput + 'T00:00:00').toLocaleDateString('en-US', { 
-        weekday: 'long', 
-        month: 'short', 
-        day: 'numeric' 
+        weekday: 'long', month: 'short', day: 'numeric' 
     });
 
     let [hours, minutes] = timeInput.split(':');
@@ -285,11 +277,29 @@ function finish() {
     hours = hours ? hours : 12; 
     let formattedTime = hours + ':' + minutes + ' ' + ampm;
 
+    // Immediately swap user to the final confirmation screen so they don't see a page reload
     document.getElementById("step3").style.display = "none";
     document.getElementById("final").style.display = "block";
-
     document.getElementById("summary").innerHTML = 
         `We are getting <strong>${selectedFoodValue}</strong> on <strong>${formattedDate}</strong> at <strong>${formattedTime}</strong>!`;
+
+    // Package the form data and silently submit it to the backend server via Fetch API
+    const form = document.getElementById("dateForm");
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        console.log("Form submitted successfully!");
+    })
+    .catch(error => {
+        console.error("Submission failed:", error);
+    });
 }
 </script>
 
